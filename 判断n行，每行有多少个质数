@@ -1,0 +1,30 @@
+#include <stdio.h>
+int main()
+{
+	int n,a,k;
+	scanf("%d",&n);
+	for (int i=1;i<=n;i++)
+	{
+		k=0;
+		scanf("%d",&a);
+		for(;a!=-1;)
+		{
+			int s;
+			for(int j=2;j<a;j++)
+			{
+				s=0;
+				if (a%j==0) 
+				{
+					s++;
+					break;
+				}	
+				if(s==1) break;
+			}
+			if(s==0||a==2) k++;
+			scanf("%d",&a);
+		}
+		printf("%d\n",k);
+	}
+	system ("pause");
+	return 0;
+}
