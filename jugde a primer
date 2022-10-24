@@ -1,0 +1,22 @@
+//判断一个数是否为质数，并求其有几个因子
+#include <stdio.h>
+int main ()
+{   long long  a,i=2,j=0;
+    scanf ("%lld",&a);
+    while (i<a)
+    {
+        if (a%i==0) 
+        {
+            j++;
+            printf("%lld\n",i);
+        }
+            i++;
+    }
+    if(j!=0) printf ("该数有%lld个非1和自身的因子见上\n",j);
+    else printf("该数为质数\n");
+    system ("pause");
+    return 0;
+}
+//若只是判断是否为质数可以有i<=sqrt()或i<=a/2,因为若a=i*j,
+//则i或j必有一个小于sqrt(i)或i/2;
+//因此可以优化50%的效率
