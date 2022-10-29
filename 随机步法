@@ -1,0 +1,80 @@
+char board[12][12]={0};
+int main()
+{
+    memset(board,'*',sizeof(char)*144);    //使用替换字符串函数或以循环方式初始化棋盘
+    srand((unsigned int)time(NULL));
+   for (int i=0;i<12;i++)   
+   {
+    board[0][i]='.';
+    board[11][i]='.';
+   }
+   for(int i=0;i<12;i++)
+   {
+    board[i][11]='.';
+    board[i][0]='.';
+   }                            //在需要使用的棋盘周围围上一圈'.'  ;
+   char ch='A';
+   int i=1,j=1;
+   while(1)
+   {
+    int t=rand()%4+1;
+    board[i][j]=ch;
+            switch (t)
+        {
+        case 1: 
+            if(board[i+1][j]=='*'&&i+1<11)
+            {
+                board[i+1][j]=ch+1;
+                i++;
+                ch++;
+            }
+            break;
+        
+        case 2: 
+            if(board[i][j+1]=='*'&&j+1<11)
+            {
+                board[i][j+1]=ch+1;
+                j++;
+                ch++;
+            }
+                break; 
+        case 3:
+            if(board[i-1][j]=='*'&&i-1>1)
+            {
+                board[i-1][j]=ch+1;
+                i--;
+                ch++;
+            }
+                break;
+        case 4:
+            if(board[i][j-1]=='*'&&j-1>1)
+            {
+                board[i][j-1]=ch+1;
+                j--;
+                ch++;
+            }
+                break;
+        }
+        system("cls");
+        if(ch=='Z'+1) break;
+        if(board[i+1][j]!='*'&&board[i][j+1]!='*'&&board[i-1][j]!='*'&&board[i][j-1]!='*')
+        break;
+    printboard(board);
+    Sleep(1000);
+    printf("\n\n");
+   }               
+    system("pause");
+    return 0;
+}
+
+void printboard(char board[12][12])
+{
+    for(int i=1;i<11;i++)
+   {
+        for(int j=1;j<11;j++)
+        {
+            printf("%c",board[i][j]);
+        }
+        printf("\n");
+   }            
+}
