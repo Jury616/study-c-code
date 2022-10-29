@@ -1,0 +1,161 @@
+#include <stdio.h>
+#define row 3
+#define col 3
+void menu ()
+{
+    int n;
+    printf("***************************\n");
+    printf("****1.play*******0.exit****\n");
+    printf("***************************\n");
+    do
+    {
+        scanf("%d",&n);
+        switch (n)
+        {
+        case 1:printf("游戏开始\n");
+                break;
+        case 0:printf("退出游戏\n");
+                break;
+        default:
+            printf("\a输入错误，请重新输入\n");
+                break;
+        }
+    }
+    while(n!=1&&n!=0);
+}
+void initialize(char board[row][col],int a,int b)
+{
+    for(int i=0;i<=row;i++)
+    {
+        for(int j=0;j<=col;j++)
+        {
+            board[i][j]=' ';
+        }
+    }
+}
+void printboard(char board[row][col],int a,int b)
+{
+    for(int i=0;i<=row;i++)
+    {
+        for (int j=0;j<col;j++)
+        {
+            printf(" %c ",board[i][j]);
+            if(j<col-1)   printf("|");
+        }
+        printf("\n");
+        if(i<row-1)    
+        {
+            for(int j=0;j<col;j++)
+            {
+                printf("---");
+                if(j<col-1)  printf("|");
+            }
+            printf("\n");
+        }
+    }
+}
+
+void playermove(char board[row][col],int a,int b)
+{
+    printf("玩家走\n请输入坐标\n");
+    int x,y;
+    while(1)
+    {
+            scanf("%d%d",&x,&y);
+            if(x>=1&&x<=col&&y>=1&&y<=row) 
+            {
+                if(board[x-1][y-1]==' ')
+                {
+                    board[x-1][y-1]='*';
+                    break;
+                }
+                else printf("\a该坐标被占用,请重新输入\n");
+            }
+            else printf("\a坐标非法,请重新输入坐标\n");
+    }
+}
+
+void computermove(char board[row][col],int a,int b)
+{
+    printf("电脑走\n");
+    srand((unsigned)time(NULL));
+    int x,y;
+    while(1)
+    {
+        x=rand()%row;
+        y=rand()%col;
+         if(board[x][y]==' ')
+         {
+            board[x][y]='#';
+            break;
+         }
+    }
+}   
+
+char judge(char board[row][col],int a,int b)
+{
+    for(int i=0;i<=row;i++)                      //横三个
+    {
+    if(board[i][0]==board[i][1]&&board[i][0]==board[i][2]&&board[i][0]!=' ')
+        {
+            return board[i][0];
+        }
+    }
+    for (int j=0;j<=col;j++)                      //列三个
+    {
+        if(board[0][j]==board[1][j]&&board[0][j]==board[2][j]&&board[2][j]!=' ')
+        {
+           return board[0][j];
+        }
+    }
+                                            //两个对角线
+    if (board[0][0]==board[1][1]&&board[0][0]==board[2][2]&&board[0][0]!=' ')
+    {
+        return board[1][1];
+    }
+    if(board[0][2]==board[1][1]&&board[1][1]==board[2][0]&&board[1][1]!=' ')
+    {
+        return board[1][1];
+    }
+    return 'c';
+}
+
+int isfull(char board[row][col],int a,int b)   //判断平局
+{
+    for(int i=0;i<row;i++)
+    {
+        for(int j=0;j<col;j++)
+        {
+            if (board[i][j]==' ')    return 0;         //棋盘没满
+        }
+    }
+    return 1;               //棋盘满了
+}
+
+int main()
+{
+    char result,t;
+        menu();
+        char board[row][col]={0};         //用数组存放棋盘的信息
+        initialize (board,row,col);      //初始化棋盘
+        printboard(board,row,col);     //打印棋盘
+        while(1)
+        {
+            playermove(board,row,col);
+            printboard(board,row,col); 
+            Sleep(1000);
+            result=judge(board,row,col);
+            if(result!='c')   break;        
+            t=isfull(board,row,col);
+            if(t==1) break;
+            computermove(board,row,col);
+            printboard(board,row,col);
+            result=judge(board,row,col);
+            if(result!='c')   break;
+        }
+        if(result=='*')   printf("玩家赢\n");
+        else if(result=='#')   printf("电脑赢\n");
+        else printf("平局\n");
+        system("pause");
+        return 0;
+}
